@@ -37,7 +37,7 @@ app.use(session({
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: `${process.env.BACKEND_URL}/auth/google/callback`,
+  callbackURL: 'https://hostcheck-backend.up.railway.app/auth/google/callback',
 }, (accessToken, refreshToken, profile, done) => {
   // Only allow your own Google account
   const allowedEmails = (process.env.ALLOWED_EMAILS || '').split(',').map(e => e.trim());
