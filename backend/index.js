@@ -32,7 +32,7 @@ app.use(session({
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   },
 }));
-
+ 
 // Passport Google OAuth
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
