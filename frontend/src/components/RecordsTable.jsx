@@ -11,7 +11,7 @@ const COLS = [
   { key: 'property', label: 'Property' },
   { key: 'category', label: 'Category' },
   { key: 'task', label: 'Task' },
-  { key: 'technician', label: 'Technician' },
+  { key: 'technician', label: 'Superstar' },
   { key: 'status', label: 'Status' },
   { key: 'notes', label: 'Notes' },
 ];

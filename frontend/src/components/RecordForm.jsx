@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const today = () => new Date().toISOString().split('T')[0];
 
-export default function RecordForm({ properties, technicians, categories, onSave, editRecord, onCancel }) {
+export default function RecordForm({ properties, superstars, categories, onSave, editRecord, onCancel }) {
   const blank = {
     property_id: '',
     date: today(),
@@ -36,7 +36,7 @@ export default function RecordForm({ properties, technicians, categories, onSave
   const set = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }));
 
   const handleSubmit = async () => {
-    if (!form.property_id || !form.date || !form.category_id || !form.task || !form.technician_id) {
+    if (!form.property_id || !form.date || !form.category_id || !form.technician_id) {
       setError('Please fill in all required fields.');
       return;
     }
@@ -53,7 +53,7 @@ export default function RecordForm({ properties, technicians, categories, onSave
   };
 
   const activeProps = properties.filter(p => p.active);
-  const activeTechs = technicians.filter(t => t.active);
+  const activeTechs = superstars.filter(t => t.active);
   const activeCats = categories.filter(c => c.active);
 
   return (
@@ -80,14 +80,14 @@ export default function RecordForm({ properties, technicians, categories, onSave
           </select>
         </div>
         <div className="form-group">
-          <label>Technician *</label>
+          <label>Superstar *</label>
           <select value={form.technician_id} onChange={set('technician_id')}>
             <option value="">Select…</option>
             {activeTechs.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
         </div>
         <div className="form-group form-group--full">
-          <label>Task *</label>
+          <label>Task</label>
           <input type="text" value={form.task} onChange={set('task')} placeholder="Describe the work done…" />
         </div>
         <div className="form-group">
