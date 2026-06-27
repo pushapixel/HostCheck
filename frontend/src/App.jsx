@@ -11,7 +11,7 @@ export default function App() {
   const [tab, setTab] = useState('log');
   const [records, setRecords] = useState([]);
   const [properties, setProperties] = useState([]);
-  const [technicians, setTechnicians] = useState([]);
+  const [superstars, setSuperstars] = useState([]);
   const [categories, setCategories] = useState([]);
   const [editRecord, setEditRecord] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ export default function App() {
       api('/api/settings/categories'),
     ]);
     setProperties(props);
-    setTechnicians(techs);
+    setSuperstars(techs);
     setCategories(cats);
   }, []);
 
@@ -96,7 +96,7 @@ export default function App() {
           <>
             <RecordForm
               properties={properties}
-              technicians={technicians}
+              superstars={superstars}
               categories={categories}
               onSave={handleSave}
               editRecord={editRecord}
@@ -112,7 +112,7 @@ export default function App() {
         ) : (
           <Settings
             properties={properties}
-            technicians={technicians}
+            superstars={superstars}
             categories={categories}
             onRefresh={fetchLookups}
           />
