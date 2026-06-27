@@ -5,13 +5,16 @@ const { requireAuth } = require('../middleware/auth');
 
 router.use(requireAuth);
 
-// Generic factory for the three lookup tables
 const makeRoutes = (table) => {
   const r = express.Router();
 
   r.get('/', async (req, res) => {
     try {
-      const { rows } = await pool.query(`SELECT * FROM ${table} ORDER BY name ASC`);
+      const email = req.user.email;
+      const { rows } = await pool.query(
+        `SELECT * FROM ${table} WHERE owner_email=$1 ORDER BY name ASC`,
+        [email]
+      );
       res.json(rows);
     } catch (err) {
       res.status(500).json({ error: `Failed to fetch ${table}` });
@@ -20,24 +23,27 @@ const makeRoutes = (table) => {
 
   r.post('/', async (req, res) => {
     try {
+      const email = req.user.email;
       const { name } = req.body;
       const { rows } = await pool.query(
-        `INSERT INTO ${table} (name) VALUES ($1) RETURNING *`,
-        [name]
+        `INSERT INTO ${table} (owner_email, name) VALUES ($1, $2) RETURNING *`,
+        [email, name]
       );
       res.status(201).json(rows[0]);
     } catch (err) {
       if (err.code === '23505') return res.status(409).json({ error: 'Name already exists' });
-      res.status(500).json({ error: `Failed to create ${table.slice(0, -1)}` });
+      res.status(500).json({ error: `Failed to create` });
     }
   });
 
   r.put('/:id', async (req, res) => {
     try {
+      const email = req.user.email;
       const { name, active } = req.body;
       const { rows } = await pool.query(
-        `UPDATE ${table} SET name=COALESCE($1,name), active=COALESCE($2,active) WHERE id=$3 RETURNING *`,
-        [name, active, req.params.id]
+        `UPDATE ${table} SET name=COALESCE($1,name), active=COALESCE($2,active)
+         WHERE id=$3 AND owner_email=$4 RETURNING *`,
+        [name, active, req.params.id, email]
       );
       res.json(rows[0]);
     } catch (err) {
@@ -48,7 +54,11 @@ const makeRoutes = (table) => {
 
   r.delete('/:id', async (req, res) => {
     try {
-      await pool.query(`UPDATE ${table} SET active=false WHERE id=$1`, [req.params.id]);
+      const email = req.user.email;
+      await pool.query(
+        `UPDATE ${table} SET active=false WHERE id=$1 AND owner_email=$2`,
+        [req.params.id, email]
+      );
       res.json({ success: true });
     } catch (err) {
       res.status(500).json({ error: `Failed to deactivate` });

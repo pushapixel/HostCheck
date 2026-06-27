@@ -5,9 +5,10 @@ const { requireAuth } = require('../middleware/auth');
 
 router.use(requireAuth);
 
-// GET all records with joined names
+// GET all records for this owner
 router.get('/', async (req, res) => {
   try {
+    const email = req.user.email;
     const { property_id } = req.query;
     let query = `
       SELECT
@@ -19,11 +20,12 @@ router.get('/', async (req, res) => {
       JOIN properties p ON mr.property_id = p.id
       JOIN categories c ON mr.category_id = c.id
       JOIN technicians t ON mr.technician_id = t.id
+      WHERE mr.owner_email=$1
     `;
-    const params = [];
+    const params = [email];
     if (property_id) {
       params.push(property_id);
-      query += ` WHERE mr.property_id = $1`;
+      query += ` AND mr.property_id = $2`;
     }
     query += ` ORDER BY mr.date DESC, mr.created_at DESC`;
     const { rows } = await pool.query(query, params);
@@ -37,11 +39,12 @@ router.get('/', async (req, res) => {
 // POST new record
 router.post('/', async (req, res) => {
   try {
+    const email = req.user.email;
     const { property_id, date, category_id, task, technician_id, status = 'Complete', notes } = req.body;
     const { rows } = await pool.query(
-      `INSERT INTO maintenance_records (property_id, date, category_id, task, technician_id, status, notes)
-       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
-      [property_id, date, category_id, task, technician_id, status, notes || null]
+      `INSERT INTO maintenance_records (owner_email, property_id, date, category_id, task, technician_id, status, notes)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+      [email, property_id, date, category_id, task || null, technician_id, status, notes || null]
     );
     res.status(201).json({ id: rows[0].id });
   } catch (err) {
@@ -50,15 +53,16 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT update record
+// PUT update record — scoped to owner
 router.put('/:id', async (req, res) => {
   try {
+    const email = req.user.email;
     const { property_id, date, category_id, task, technician_id, status, notes } = req.body;
     await pool.query(
       `UPDATE maintenance_records
        SET property_id=$1, date=$2, category_id=$3, task=$4, technician_id=$5, status=$6, notes=$7
-       WHERE id=$8`,
-      [property_id, date, category_id, task, technician_id, status, notes || null, req.params.id]
+       WHERE id=$8 AND owner_email=$9`,
+      [property_id, date, category_id, task || null, technician_id, status, notes || null, req.params.id, email]
     );
     res.json({ success: true });
   } catch (err) {
@@ -67,10 +71,14 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE record
+// DELETE record — scoped to owner
 router.delete('/:id', async (req, res) => {
   try {
-    await pool.query('DELETE FROM maintenance_records WHERE id=$1', [req.params.id]);
+    const email = req.user.email;
+    await pool.query(
+      'DELETE FROM maintenance_records WHERE id=$1 AND owner_email=$2',
+      [req.params.id, email]
+    );
     res.json({ success: true });
   } catch (err) {
     console.error(err);
