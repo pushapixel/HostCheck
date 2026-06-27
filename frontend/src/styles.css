@@ -443,3 +443,10 @@ body { min-height: 100vh; }
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.header-logo-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: cover;
+}

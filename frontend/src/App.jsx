@@ -65,7 +65,7 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-left">
-          <span className="header-logo">🏠</span>
+          <img src="/icons/apple-touch-icon.png" alt="HostCheck" className="header-logo-img" />
           <span className="header-title">HostCheck</span>
         </div>
         <nav className="header-nav">
