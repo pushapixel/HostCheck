@@ -58,7 +58,7 @@ export default function RecordForm({ properties, superstars, categories, onSave,
 
   return (
     <div className="record-form">
-      <h2 className="form-title">{editRecord ? 'Edit Record' : 'Add Record'}</h2>
+      <h2 className="form-title">{editRecord ? 'Edit Record' : 'Maintenance'}</h2>
       {error && <div className="form-error">{error}</div>}
       <div className="form-grid">
         <div className="form-group">
@@ -106,7 +106,7 @@ export default function RecordForm({ properties, superstars, categories, onSave,
       <div className="form-actions">
         {editRecord && <button className="btn-secondary" onClick={onCancel}>Cancel</button>}
         <button className="btn-primary" onClick={handleSubmit} disabled={saving}>
-          {saving ? 'Saving…' : editRecord ? 'Save Changes' : 'Add Record'}
+          {saving ? 'Saving…' : editRecord ? 'Save' : 'Add'}
         </button>
       </div>
     </div>
