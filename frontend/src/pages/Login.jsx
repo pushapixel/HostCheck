@@ -4,9 +4,9 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="login-card">
-        <div className="login-logo">🏠</div>
+        <img src="/apple-touch-icon.png" alt="HostCheck" className="login-logo-img" />
         <h1>HostCheck</h1>
-        <p>Track cleans and maintenance across your properties.</p>
+        <p>Track cleans and maintenance across your Branson properties.</p>
         <a href={`${BASE}/auth/google`} className="btn-google">
           <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
