@@ -88,6 +88,38 @@ function ListManager({ title, items, endpoint, onRefresh }) {
   );
 }
 
+function IosInstallCard() {
+  const url = window.location.origin;
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="ios-install-card">
+      <div className="ios-install-header">
+        <span className="ios-install-icon">📱</span>
+        <h3>Add to iPhone Home Screen</h3>
+      </div>
+      <ol className="ios-steps">
+        <li>Open HostCheck in <strong>Safari</strong> on your iPhone</li>
+        <li>Tap the <strong>Share</strong> button <span className="ios-share-icon">⎋</span> at the bottom of the screen</li>
+        <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+        <li>Tap <strong>"Add"</strong> — done!</li>
+      </ol>
+      <div className="ios-url-row">
+        <span className="ios-url">{url}</span>
+        <button className="btn-sm btn-secondary" onClick={copy}>
+          {copied ? '✓ Copied' : 'Copy URL'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Settings({ properties, superstars, categories, onRefresh }) {
   return (
     <div className="settings-page">
@@ -98,6 +130,7 @@ export default function Settings({ properties, superstars, categories, onRefresh
         <ListManager title="Superstars" items={superstars} endpoint="technicians" onRefresh={onRefresh} />
         <ListManager title="Categories" items={categories} endpoint="categories" onRefresh={onRefresh} />
       </div>
+      <IosInstallCard />
     </div>
   );
 }
