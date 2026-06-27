@@ -88,14 +88,14 @@ function ListManager({ title, items, endpoint, onRefresh }) {
   );
 }
 
-export default function Settings({ properties, technicians, categories, onRefresh }) {
+export default function Settings({ properties, superstars, categories, onRefresh }) {
   return (
     <div className="settings-page">
       <h2>Settings</h2>
       <p className="settings-hint">Deactivating an item hides it from forms but preserves historical records.</p>
       <div className="settings-grid">
         <ListManager title="Properties" items={properties} endpoint="properties" onRefresh={onRefresh} />
-        <ListManager title="Technicians" items={technicians} endpoint="technicians" onRefresh={onRefresh} />
+        <ListManager title="Superstars" items={superstars} endpoint="technicians" onRefresh={onRefresh} />
         <ListManager title="Categories" items={categories} endpoint="categories" onRefresh={onRefresh} />
       </div>
     </div>
