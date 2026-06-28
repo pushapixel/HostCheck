@@ -2,13 +2,13 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #f7f8fa;
-  --surface: #ffffff;
-  --border: #e2e5ea;
-  --text: #1a1d23;
-  --text-muted: #6b7280;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
+  --bg: #f2ede8;
+  --surface: #faf8f5;
+  --border: #ddd5c8;
+  --text: #2c2420;
+  --text-muted: #7c6f65;
+  --accent: #a0522d;
+  --accent-hover: #8b4513;
   --danger: #dc2626;
   --success: #16a34a;
   --warning: #d97706;
@@ -227,7 +227,7 @@ body { min-height: 100vh; }
   vertical-align: top;
 }
 .records-table tr:last-child td { border-bottom: none; }
-.records-table tr:hover td { background: #fafbfc; }
+.records-table tr:hover td { background: #ede8e2; }
 
 .td-mono { font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
 .td-task { max-width: 240px; }
@@ -242,8 +242,8 @@ body { min-height: 100vh; }
   font-weight: 500;
 }
 .tag--property {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: #f5ede4;
+  color: #8b4513;
 }
 
 .status-badge {
@@ -255,9 +255,9 @@ body { min-height: 100vh; }
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.status--complete { background: #dcfce7; color: #15803d; }
-.status--progress { background: #fef9c3; color: #92400e; }
-.status--scheduled { background: #e0f2fe; color: #0369a1; }
+.status--complete { background: #d4edda; color: #2d6a4f; }
+.status--progress { background: #fef3c7; color: #92400e; }
+.status--scheduled { background: #dbeafe; color: #1e5a8e; }
 
 .empty-state {
   padding: 48px;
